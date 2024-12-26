@@ -1,4 +1,4 @@
-use crate::api::{HttpClient, HttpClientExt};
+use crate::api::{mclogs::raw_log, HttpClient};
 
 use std::sync::OnceLock;
 
@@ -6,9 +6,6 @@ use eyre::Result;
 use log::trace;
 use poise::serenity_prelude::Message;
 use regex::Regex;
-
-const MCLOGS: &str = "https://api.mclo.gs/1";
-const RAW: &str = "/raw";
 
 pub struct MCLogs;
 
@@ -22,9 +19,6 @@ impl super::LogProvider for MCLogs {
 	}
 
 	async fn fetch(&self, http: &HttpClient, content: &str) -> Result<String> {
-		let url = format!("{MCLOGS}{RAW}/{content}");
-		let log = http.get_request(&url).await?.text().await?;
-
-		Ok(log)
+		raw_log(http, content).await
 	}
 }

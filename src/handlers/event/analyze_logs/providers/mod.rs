@@ -8,13 +8,11 @@ use poise::serenity_prelude::Message;
 use regex::Regex;
 
 use self::{
-	_0x0::_0x0 as _0x0st, attachment::Attachment, haste::Haste, mclogs::MCLogs, paste_gg::PasteGG,
-	pastebin::PasteBin,
+	_0x0::_0x0 as _0x0st, haste::Haste, mclogs::MCLogs, paste_gg::PasteGG, pastebin::PasteBin,
 };
 
 #[path = "0x0.rs"]
 mod _0x0;
-mod attachment;
 mod haste;
 mod mclogs;
 mod paste_gg;
@@ -35,7 +33,6 @@ fn get_first_capture(regex: &Regex, string: &str) -> Option<String> {
 #[enum_dispatch(LogProvider)]
 enum Provider {
 	_0x0st,
-	Attachment,
 	Haste,
 	MCLogs,
 	PasteGG,
@@ -44,9 +41,8 @@ enum Provider {
 
 impl Provider {
 	pub fn iterator() -> Iter<'static, Provider> {
-		static PROVIDERS: [Provider; 6] = [
+		static PROVIDERS: [Provider; 5] = [
 			Provider::_0x0st(_0x0st),
-			Provider::Attachment(Attachment),
 			Provider::Haste(Haste),
 			Provider::MCLogs(MCLogs),
 			Provider::PasteBin(PasteBin),

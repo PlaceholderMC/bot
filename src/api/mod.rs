@@ -3,6 +3,7 @@ use reqwest::Response;
 
 pub mod dadjoke;
 pub mod github;
+pub mod mclogs;
 pub mod paste_gg;
 pub mod pluralkit;
 pub mod prism_meta;

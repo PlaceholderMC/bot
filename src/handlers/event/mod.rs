@@ -1,5 +1,6 @@
 use crate::{api, Data, Error};
 
+use analyze_logs::handle_component_interaction;
 use log::{debug, info, trace};
 use poise::serenity_prelude::{ActivityData, Context, FullEvent, OnlineStatus};
 use poise::FrameworkContext;
@@ -33,6 +34,7 @@ pub async fn handle(
 		FullEvent::InteractionCreate { interaction } => {
 			if let Some(component_interaction) = interaction.as_message_component() {
 				give_role::handle(ctx, component_interaction).await?;
+				handle_component_interaction(ctx, component_interaction, data).await?;
 			}
 		}
 
@@ -63,7 +65,7 @@ pub async fn handle(
 
 			eta::handle(ctx, new_message).await?;
 			expand_link::handle(ctx, &data.http_client, new_message).await?;
-			analyze_logs::handle(ctx, new_message, data).await?;
+			analyze_logs::handle_message(ctx, new_message, data).await?;
 		}
 
 		FullEvent::ReactionAdd { add_reaction } => {
