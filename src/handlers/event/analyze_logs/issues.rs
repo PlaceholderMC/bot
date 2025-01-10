@@ -33,6 +33,7 @@ pub async fn find(log: &str, data: &Data) -> Result<Vec<(String, String)>> {
 		intermediary_mappings,
 		old_forge_new_java,
 		checksum_mismatch,
+		linux_openal,
 	];
 
 	let mut res: Vec<(String, String)> = issues.iter().filter_map(|issue| issue(log)).collect();
@@ -411,5 +412,22 @@ fn checksum_mismatch(log: &str) -> Issue {
     );
 
 	let found = log.contains("Checksum mismatch, download is bad.");
+	found.then_some(issue)
+}
+
+fn linux_openal(log: &str) -> Issue {
+	let issue = (
+		"Missing .alsoftrc".to_string(),
+		"OpenAL is missing the configuration file.
+		To fix this, create a file named `.alsoftrc` in your home directory with the following content:
+		```
+		drivers=alsa
+		hrtf=true
+		```"
+			.to_string(),
+	);
+
+	let found = log.contains("Failed to get OpenAL")
+		|| log.contains("libopenal.so");
 	found.then_some(issue)
 }
